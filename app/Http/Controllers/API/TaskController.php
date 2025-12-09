@@ -5,10 +5,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Services\TaskService;
-use App\Http\Resources\TaskResource;
-use App\Http\Requests\StoreTaskRequest;
-use App\Http\Requests\UpdateTaskRequest;
-use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
 {
@@ -25,7 +21,6 @@ class TaskController extends Controller
             ->latest()
             ->get();
     }
-
 
     public function store(Request $request)
     {
@@ -45,15 +40,6 @@ class TaskController extends Controller
         ]);
 
         return response()->json($task, 201);
-    }
-
-    public function show($id, Request $request)
-    {
-        $task = $this->service->findForUser($request->user(), $id);
-        if (!$task) {
-            return response()->json(['message' => 'Not Found'], Response::HTTP_NOT_FOUND);
-        }
-        return new TaskResource($task);
     }
 
     public function update(Request $request, $id)
